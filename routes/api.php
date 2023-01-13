@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ArticlesController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoriesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::post('posts/create', [ArticlesController::class, 'create']);
+    Route::post('posts/list-all', [ArticlesController::class, 'listAll']);
+    Route::post('posts/show-detail', [ArticlesController::class, 'showDetail']);
+    Route::post('posts/update', [ArticlesController::class, 'update']);
+    Route::post('posts/delete', [ArticlesController::class, 'delete']);
+
+    Route::post('categories/create', [CategoriesController::class, 'create']);
+    Route::post('categories/list-all', [CategoriesController::class, 'listAll']);
+    Route::post('categories/show-detail', [CategoriesController::class, 'showDetail']);
+    Route::post('categories/update', [CategoriesController::class, 'update']);
+    Route::post('categories/delete', [CategoriesController::class, 'delete']);
 });
