@@ -66,12 +66,12 @@ class ArticlesController extends BaseController
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
+        $input = $request->all();
         if ($request->hasFile('image')) {
             $image_path = $request->file('image')->store('image', 'public');
+            $input['image'] = $image_path;
         }
-        $input = $request->all();
         $input['slug'] = Str::slug($input['title']) . '-' . rand(99, 99999);
-        $input['image'] = $image_path;
         $input['user_id'] = Auth::id();
         $model = Articles::find($input['id'])->update($input);
         if ($model) {
